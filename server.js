@@ -31,19 +31,19 @@ mongoose.connection.on("disconnected", () => {
 
 //middlewares
 app.use(express.json()); // to use any body in api request
-app.use("/api/v1/auth", authRoute);
+app.use("/api/v1", authRoute);
 
 //custom error handling middleware
-app.use((err, req, res, next) => {
-  const errStatus = err.status || 500;
-  const errMessage = err.message || "something wrong with api request!";
-  res.status(errStatus).json({
-    success: false,
-    status: errStatus,
-    message: errMessage,
-    // stack: err.stack,
-  });
-});
+// app.use((err, req, res, next) => {
+//   const errStatus = err.status || 500;
+//   const errMessage = err.message || "something wrong with api request!";
+//   res.status(errStatus).json({
+//     success: false,
+//     status: errStatus,
+//     message: errMessage,
+//     // stack: err.stack,
+//   });
+// });
 
 app.listen(process.env.PORT, () => {
   connectToDb();
