@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/johnsus1995/game-store-backend/issues"
   },
-  "homepage": "https://github.com/johnsus1995/game-store-backend#readme"
+  "homepage": "https://github.com/johnsus1995/game-store-backend#readme",
+  "devDependencies": {
+    "eslint": "^8.30.0"
+  }
 }

@@ -1,16 +1,16 @@
+/* eslint-disable no-unused-vars */
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import { createError } from "../utils/error.js";
-import jwt from "jsonwebtoken"
-import cookieParser  from "cookie-parser"
+import jwt from "jsonwebtoken";
 
 export const register = async (req, res, next) => {
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(req.body.password, salt);
   try {
     const savedUser = new User({
-      firstName:req.body.firstName,
-      lastName:req.body.lastName,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
       email: req.body.email,
       phone: req.body.phone,
       password: hash,
@@ -32,20 +32,24 @@ export const login = async (req, res, next) => {
       user.password
     );
 
-    if (!isPasswordCorrect) return next(createError(400, "invalid username or password"));
+    if (!isPasswordCorrect)
+      return next(createError(400, "invalid username or password"));
 
-    const token = jwt.sign({id:user._doc._id,},process.env.JWT_SECRET_KEY)
+    const token = jwt.sign({ id: user._doc._id }, process.env.JWT_SECRET_KEY);
 
-    const {password,...rest} = user._doc
+    const { password, ...rest } = user._doc;
 
-    res.cookie("access_token",token,{httpOnly:true}).status(200).json({...rest});
+    res
+      .cookie("access_token", token, { httpOnly: true })
+      .status(200)
+      .json({ ...rest });
   } catch (error) {
     next(error);
   }
 };
 
-export const updateUser = async (req, res) => {
-  try {
-    const updatedUser = await User.findByIdAndUpdate();
-  } catch (error) {}
-};
+// export const updateUser = async (req, res) => {
+//   try {
+//     const updatedUser = await User.findByIdAndUpdate();
+//   } catch (error) {}
+// };
