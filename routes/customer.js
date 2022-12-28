@@ -1,9 +1,11 @@
-import express from "express"
+import express from "express";
+import { createCustomer, updateCustomer } from "../controllers/customer.js";
+import { verifyToken } from "../utils/verifyToken.js";
 
-const router = express.router()
+const router = express.Router();
 
-router.post("/user",async (req,res) => {
+router.post("/create",verifyToken, createCustomer);
+router.put("/:id",verifyToken,updateCustomer)
 
-    
-  
-})
+
+export default router

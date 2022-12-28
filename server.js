@@ -2,9 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import authRoute from "./routes/auth.js";
-// import usersRoute from "./routes/users.js";
-// import hotelsRoute from "./routes/hotels.js";
-// import roomsRoute from "./routes/rooms.js";
+import customerRoute from "./routes/customer.js"
+
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -32,7 +31,8 @@ mongoose.connection.on("disconnected", () => {
 //middlewares
 app.use(cookieParser())
 app.use(express.json()); // to use any body in api request
-app.use("/api/v1", authRoute);
+app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/customers", customerRoute);
 
 //custom error handling middleware
 // app.use((err, req, res, next) => {
@@ -52,6 +52,6 @@ app.listen(process.env.PORT, () => {
 });
 
 /**
- Finished time stamp
+ video time stamp
  
  */
