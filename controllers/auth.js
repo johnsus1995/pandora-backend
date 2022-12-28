@@ -2,8 +2,7 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import { createError } from "../utils/error.js";
 import jwt from "jsonwebtoken"
-// import jwt from "jsonwebtoken";
-// import { createError } from "../utils.js/error.js";
+import cookieParser  from "cookie-parser"
 
 export const register = async (req, res, next) => {
   const salt = bcrypt.genSaltSync(10);
@@ -39,7 +38,7 @@ export const login = async (req, res, next) => {
 
     const {password,...rest} = user._doc
 
-    res.status(200).json({...rest});
+    res.cookie("access_token",token,{httpOnly:true}).status(200).json({...rest});
   } catch (error) {
     next(error);
   }

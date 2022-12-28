@@ -5,7 +5,7 @@ import authRoute from "./routes/auth.js";
 // import usersRoute from "./routes/users.js";
 // import hotelsRoute from "./routes/hotels.js";
 // import roomsRoute from "./routes/rooms.js";
-// import cookieParser from "cookie-parser";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 
 const app = express();
@@ -30,6 +30,7 @@ mongoose.connection.on("disconnected", () => {
 });
 
 //middlewares
+app.use(cookieParser())
 app.use(express.json()); // to use any body in api request
 app.use("/api/v1", authRoute);
 
