@@ -1,32 +1,49 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
+import { createError } from "../utils/error.js";
 // import jwt from "jsonwebtoken";
 // import { createError } from "../utils.js/error.js";
 
-export const createUser = async (req, res, next) => {
+export const register = async (req, res, next) => {
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(req.body.password, salt);
-
   try {
-    const newUser = new User({
-      username: req.body.username,
+    const savedUser = new User({
+      firstName:req.body.firstName,
+      lastName:req.body.lastName,
       email: req.body.email,
+      phone: req.body.phone,
       password: hash,
     });
-    await newUser.save();
-    res.status(200).json("New user created successfully");
+    await savedUser.save();
+    res.status(200).json(savedUser);
+  } catch (error) {
+    next(error); //go to next middleware
+  }
+};
+
+export const login = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return next(createError(404, "user not found"));
+
+    const isPasswordCorrect = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+
+    if (!isPasswordCorrect) return next(400, "invalid username or password");
+
+    const {password,...rest} = user
+
+    res.status(200).json(...rest);
   } catch (error) {
     next(error);
   }
 };
 
-// export const login = async (req, res, next) => {
-//   try {
-//     const user = await User.findOne({ username: req.body.email });
-//     if(!user){
-//         // return next(createError(404,"User does not exist"))
-//     }
-//   } catch (err) {
-//     next(err)
-//   }
-// };
+export const updateUser = async (req, res) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate();
+  } catch (error) {}
+};

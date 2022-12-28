@@ -29,11 +29,12 @@ mongoose.connection.on("disconnected", () => {
   console.log("mongoDB connection lost");
 });
 
-app.use(express.json());
+//middlewares
+app.use(express.json()); // to use any body in api request
 app.use("/api/v1/auth", authRoute);
 
+//custom error handling middleware
 app.use((err, req, res, next) => {
-  //custom error handling middleware
   const errStatus = err.status || 500;
   const errMessage = err.message || "something wrong with api request!";
   res.status(errStatus).json({
@@ -46,5 +47,10 @@ app.use((err, req, res, next) => {
 
 app.listen(process.env.PORT, () => {
   connectToDb();
-  console.log("server running on 8800");
+  console.log(`server running on ${process.env.PORT}`);
 });
+
+/**
+ Finished time stamp
+ 
+ */
