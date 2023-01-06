@@ -1,2 +1,2 @@
-# game-store-backend
-# nodejs - 
+# pandora-backend
+# nodejs - express
