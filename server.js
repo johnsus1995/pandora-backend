@@ -2,7 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import authRoute from "./routes/auth.js";
-import customerRoute from "./routes/customer.js"
+import customerRoute from "./routes/customer.js";
+import bodyParser from "body-parser";
 
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -15,7 +16,7 @@ const connectToDb = async () => {
   try {
     await mongoose.connect(process.env.MONGO);
   } catch (error) {
-    console.error(error)
+    console.error(error);
     // throw error;
   }
 };
@@ -29,8 +30,13 @@ mongoose.connection.on("disconnected", () => {
 });
 
 //middlewares
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(express.json()); // to use any body in api request
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/customers", customerRoute);
 
