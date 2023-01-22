@@ -31,7 +31,7 @@ const CustomerSchema = new Schema(
   { timestamps: true }
 );
 
-const Customer = mongoose.model("User", CustomerSchema);
+const Customer = mongoose.model("Customer", CustomerSchema);
 
 
 export default Customer;
